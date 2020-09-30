@@ -1,9 +1,14 @@
 from django.shortcuts import render
 
+from .models import Plan
+
 
 def index_view(request):
-
-    return render(request, 'main/index.html')
+    queryset = Plan.objects.all()
+    context = {
+        'plans': queryset,
+    }
+    return render(request, 'main/index.html', context)
 
 
 def dashboard(request):
