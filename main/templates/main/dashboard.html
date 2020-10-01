@@ -7,5 +7,8 @@ Dashboard - {{ block.super }}
 {% block content %}
 <div class="container pt-5">
     <h1>Dashboard</h1>
+    {% if request.user.is_authenticated %}
+    <p>Plan: {{ request.user.subscription_set.first.plan }}</p>
+    {% endif %}
 </div>
 {% endblock content %}
