@@ -29,7 +29,7 @@ Pricing List - {{ block.super }}
                                 <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Monthly Status
                                     Reports</li>
                             </ul>
-                            <a href="{% url 'accounts:signup' %}" class="btn btn-block btn-primary text-uppercase">Get
+                            <a href="{% url 'accounts:signup' %}?plan={{ plan.name }}" class="btn btn-block btn-primary text-uppercase">Get
                                 Started</a>
                         </div>
                     </div>

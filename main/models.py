@@ -26,4 +26,4 @@ class Subscription(models.Model):
         unique_together = ('user', 'plan', )
 
     def __str__(self):
-        return f'{self.user.name} - {self.plan.name}'
+        return f'{self.user.name.title()} - {self.plan.name.title()}'
