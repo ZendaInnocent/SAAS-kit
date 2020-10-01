@@ -21,6 +21,8 @@ class Subscription(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.DO_NOTHING)
     active = models.BooleanField(default=True)
     canceled = models.BooleanField(default=False)
+    recurrence_period = models.PositiveIntegerField(default=1)
+    auto_renewal = models.BooleanField(default=True)
 
     class Meta:
         unique_together = ('user', 'plan', )
