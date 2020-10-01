@@ -17,7 +17,7 @@ Dashboard - {{ block.super }}
                                 class="feather feather-user mr-2">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="12" cy="7" r="4"></circle>
-                            </svg>Your Information
+                            </svg>Personal Information
                         </a>
                         <a href="#account" data-toggle="tab" class="nav-item nav-link has-icon nav-link-faded">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -110,7 +110,7 @@ Dashboard - {{ block.super }}
                 </div>
                 <div class="card-body tab-content">
                     <div class="tab-pane active" id="profile">
-                        <h6>YOUR PROFILE INFORMATION</h6>
+                        <h6>PERSONAL INFORMATION</h6>
                         <hr>
                         <form>
                             <div class="form-group">
@@ -202,6 +202,11 @@ Dashboard - {{ block.super }}
                         <h6>BILLING SETTINGS</h6>
                         <hr>
                         <form>
+                            <div class="form-group">
+                                <h2>Current Plan: </h2>
+                                <button class="btn btn-primary">Change Plan</button>
+                                <hr>
+                                </div>
                             <div class="form-group">
                                 <label class="d-block mb-0">Payment Method</label>
                                 <div class="small text-muted mb-3">You have not added a payment method</div>
