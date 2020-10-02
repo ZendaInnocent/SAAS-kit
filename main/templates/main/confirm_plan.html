@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Confirm Plan - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center col-md-6 offset-md-3">
+        <h4>You are about to change your plan from <b>{{ current_plan }}</b> plan to <b>{{ new_plan }}</b> plan.</h4>
+        <form method="POST">
+            {% csrf_token %}
+            <button class="btn btn-success">Yes, I want to change!</button>
+            <a href="{% url 'main:dashboard' %}" class="btn btn-secondary">No, Not Yet!</a>
+            <input type="hidden" name="plan" value="Basic">
+        </form>
+    </div>
+</div>
+{% endblock content %}

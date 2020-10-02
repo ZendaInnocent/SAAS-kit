@@ -203,8 +203,8 @@ Dashboard - {{ block.super }}
                         <hr>
                         <form>
                             <div class="form-group">
-                                <h2>Current Plan: </h2>
-                                <button class="btn btn-primary">Change Plan</button>
+                                <h2>Current Plan: {{ current_plan.plan }}</h2>
+                                <a href="{% url 'main:change-plan' %}" class="btn btn-primary">Change Plan</a>
                                 <hr>
                                 </div>
                             <div class="form-group">

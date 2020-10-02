@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Change Plan - {{ block.super }}
+{% endblock title %}
+
+{% block content %}
+<section class="pricing py-5">
+    <div class="container">
+        <div class="row">
+            {% for plan in plans %}
+            <div class="col-lg-4">
+                <div class="card mb-5 mb-lg-0">
+                    <div class="card-body">
+                        <h5 class="card-title text-muted text-uppercase text-center">{{ plan.name }}</h5>
+                        <h6 class="card-price text-center">${{ plan.price }}<span class="period">/month</span></h6>
+                        <hr>
+                        <ul class="fa-ul">
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Single User</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span>5GB Storage</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Unlimited Public Projects</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Community Access</li>
+                            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Unlimited
+                                Private Projects</li>
+                            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Dedicated
+                                Phone Support</li>
+                            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Free Subdomain
+                            </li>
+                            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Monthly Status
+                                Reports</li>
+                        </ul>
+                        {% if request.user.is_authenticated %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button
+                                class="btn btn-block text-uppercase {% if request.user.subscription_set.first.plan.name == plan.name %}btn-secondary disabled{% else %}btn-primary{% endif %}">Select
+                                Plan
+                            </button>
+                            <input type="hidden" value="{{ plan.name }}" name="plan">
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+</html>
