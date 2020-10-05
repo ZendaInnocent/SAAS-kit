@@ -1,4 +1,6 @@
+from django.contrib.auth.views import LoginView
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template import context
 from django.views.generic import CreateView, TemplateView
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy, reverse
@@ -63,3 +65,11 @@ def confirm_registration_view(request, user_id, token):
         user.is_active = True
         user.save()
     return redirect('accounts:login')
+
+
+class UserLoginView(LoginView):
+    # todo: get success url
+    # registered user redirected to payment options
+    # superusers redirected to admin page
+
+    pass

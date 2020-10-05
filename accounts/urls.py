@@ -7,6 +7,7 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('signup/', views.UserRegistrationView.as_view(), name='signup'),
+    path('login/', views.UserLoginView.as_view(), name='login'),
     path('confirm-email/<str:user_id>/<str:token>/',
          views.confirm_registration_view, name='confirm-email'),
     path('pending-registration/', views.PendingRegistration.as_view(),
