@@ -31,9 +31,7 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
     search_fields = ('email', 'name', )
     list_filter = ('is_staff', )
-    list_display = ('email',
-                    'name',
-                    'is_staff', )
+    list_display = ('email', 'name', 'is_staff', 'is_active', )
 
 
 admin.site.unregister(Group)

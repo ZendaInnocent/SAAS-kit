@@ -26,6 +26,7 @@ class UserManager(BaseUserManager):
             name=name,
         )
         user.is_staff = True
+        user.is_active = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
@@ -37,7 +38,7 @@ class User(AbstractBaseUser):
         unique=True,
     )
     name = models.CharField(max_length=100)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
