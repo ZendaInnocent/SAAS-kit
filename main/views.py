@@ -29,6 +29,8 @@ def change_plan(request):
 
     if request.method == 'POST':
         sub = request.user.subscription_set.first()
+        cur_plan = sub.plan.name
+        request.session['current-plan'] = cur_plan
         plan = request.POST['plan']
         request.session['plan'] = plan
         new_plan = get_object_or_404(Plan, name=plan)
@@ -38,8 +40,9 @@ def change_plan(request):
                           f'Please select different plan to change.'))
             return redirect(reverse('main:change-plan'))
         else:
-            context = {'new_plan': new_plan, 'current_plan': sub.plan}
-            return render(request, 'main/confirm_plan.html', context)
+            # context = {'new_plan': new_plan, 'current_plan': sub.plan}
+            # return render(request, 'main/confirm_plan.html', context)
+            return redirect(reverse('main:confirm-plan'))
 
     context = {
         'plans': plans,
@@ -49,10 +52,11 @@ def change_plan(request):
 
 @login_required
 def confirm_plan(request):
+    current_plan = request.session['current-plan']
+
     if request.method == 'POST':
-        current_plan = request.user.subscription_set.first()
         plan = request.session['plan'] if request.session['plan'] else None
-        if plan != current_plan.plan:
+        if plan != current_plan:
             new_plan = get_object_or_404(Plan, name=plan)
             # set new plan for the user
             if request.user.is_authenticated:
@@ -64,19 +68,22 @@ def confirm_plan(request):
                 del request.session['plan']
                 messages.success(
                     request, 'You plan has changed successful.')
-            return render(request, 'main/thank_you.html', {
-                'new_plan': new_plan,
-            })
+            # return render(request, 'main/thank_you.html', {
+            #     'new_plan': new_plan,
+            # })
+            return redirect(reverse('main:thank-you'))
 
     context = {
-        'current_plan': request.user.subscription_set.first(),
+        'current_plan': request.session['current-plan'],
+        'new_plan': request.session['plan'],
     }
     return render(request, 'main/confirm_plan.html', context)
 
 
 @login_required
 def thank_you(request):
-    return render(request, 'main/thank_you.html')
+    new_plan = request.user.subscription_set.first().plan.name
+    return render(request, 'main/thank_you.html', {'new_plan': new_plan})
 
 
 @login_required
