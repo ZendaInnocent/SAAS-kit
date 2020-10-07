@@ -116,7 +116,7 @@ Dashboard - {{ block.super }}
                             <div class="form-group">
                                 <label for="fullName">Full Name</label>
                                 <input type="text" class="form-control" id="fullName" aria-describedby="fullNameHelp"
-                                    placeholder="Enter your fullname" value="Kenneth Valdez">
+                                    placeholder="Enter your fullname" value="{{ request.user.name }}">
                                 <small id="fullNameHelp" class="form-text text-muted">Your name may appear around here
                                     where you are mentioned. You can change or remove it at any time.</small>
                             </div>
@@ -201,7 +201,7 @@ Dashboard - {{ block.super }}
                     <div class="tab-pane" id="billing">
                         <h6>BILLING SETTINGS</h6>
                         <hr>
-                        <form>
+                        <div>
                             <div class="form-group">
                                 <h2>Current Plan: {{ current_plan.plan }}</h2>
                                 <a href="{% url 'main:change-plan' %}" class="btn btn-primary">Change Plan</a>
@@ -210,7 +210,7 @@ Dashboard - {{ block.super }}
                             <div class="form-group">
                                 <label class="d-block mb-0">Payment Method</label>
                                 <div class="small text-muted mb-3">You have not added a payment method</div>
-                                <button class="btn btn-primary" type="button">Add Payment Method</button>
+                                <a href="{% url 'main:payments' %}" class="btn btn-primary">Add Payment Method</a>
                             </div>
                             <div class="form-group mb-0">
                                 <label class="d-block">Payment History</label>

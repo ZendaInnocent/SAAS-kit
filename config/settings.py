@@ -129,7 +129,7 @@ STATICFILES = BASE_DIR / 'static'
 
 
 AUTH_USER_MODEL = 'accounts.User'
-# LOGIN_REDIRECT_URL = reverse_lazy('main:dashboard')
+LOGIN_REDIRECT_URL = reverse_lazy('main:dashboard')
 LOGOUT_REDIRECT_URL = reverse_lazy('accounts:login')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

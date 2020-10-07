@@ -77,3 +77,8 @@ def confirm_plan(request):
 @login_required
 def thank_you(request):
     return render(request, 'main/thank_you.html')
+
+
+@login_required
+def payments(request):
+    return render(request, 'main/payments.html')
