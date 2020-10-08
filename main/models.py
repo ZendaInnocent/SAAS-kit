@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -16,6 +17,20 @@ class Plan(models.Model):
         return self.name.title()
 
 
+class Transaction(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+    subscription = models.ForeignKey('Subscription', null=True, blank=True,
+                                     editable=False,
+                                     on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, null=True, blank=True, editable=False,
+                             on_delete=models.DO_NOTHING)
+    amount = models.DecimalField(max_digits=64, decimal_places=2,
+                                 null=True, blank=True, editable=False)
+
+    class Meta:
+        ordering = ['-timestamp', ]
+
+
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     plan = models.ForeignKey(Plan, on_delete=models.DO_NOTHING)
@@ -23,6 +38,7 @@ class Subscription(models.Model):
     canceled = models.BooleanField(default=False)
     recurrence_period = models.PositiveIntegerField(default=1)
     auto_renewal = models.BooleanField(default=True)
+    expires = models.DateField(null=True, default=timezone.now)
 
     class Meta:
         unique_together = ('user', 'plan', )
