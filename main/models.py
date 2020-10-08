@@ -29,3 +29,10 @@ class Subscription(models.Model):
 
     def __str__(self):
         return f'{self.user.name.title()} - {self.plan.name.title()}'
+
+
+def __user_get_subscription(user):
+    return user.subscription_set.first().plan.name
+
+
+User.add_to_class('get_subscription', __user_get_subscription)

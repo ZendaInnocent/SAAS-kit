@@ -18,7 +18,7 @@ def index_view(request):
 @login_required
 def dashboard(request):
     context = {
-        'current_plan': request.user.subscription_set.first(),
+        'current_plan': request.user.get_subscription(),
     }
     return render(request, 'main/dashboard.html', context)
 
@@ -28,20 +28,17 @@ def change_plan(request):
     plans = Plan.objects.all()
 
     if request.method == 'POST':
-        sub = request.user.subscription_set.first()
-        cur_plan = sub.plan.name
+        cur_plan = request.user.get_subscription()
         request.session['current-plan'] = cur_plan
         plan = request.POST['plan']
         request.session['plan'] = plan
         new_plan = get_object_or_404(Plan, name=plan)
-        if sub.plan == new_plan:
+        if cur_plan == plan:
             messages.info(
-                request, (f'You are current subscribed to {sub.plan} plan. '
+                request, (f'You are current subscribed to {cur_plan} plan. '
                           f'Please select different plan to change.'))
             return redirect(reverse('main:change-plan'))
         else:
-            # context = {'new_plan': new_plan, 'current_plan': sub.plan}
-            # return render(request, 'main/confirm_plan.html', context)
             return redirect(reverse('main:confirm-plan'))
 
     context = {
@@ -68,9 +65,6 @@ def confirm_plan(request):
                 del request.session['plan']
                 messages.success(
                     request, 'You plan has changed successful.')
-            # return render(request, 'main/thank_you.html', {
-            #     'new_plan': new_plan,
-            # })
             return redirect(reverse('main:thank-you'))
 
     context = {
@@ -82,7 +76,7 @@ def confirm_plan(request):
 
 @login_required
 def thank_you(request):
-    new_plan = request.user.subscription_set.first().plan.name
+    new_plan = request.user.get_subscription()
     return render(request, 'main/thank_you.html', {'new_plan': new_plan})
 
 

@@ -203,8 +203,9 @@ Dashboard - {{ block.super }}
                         <hr>
                         <div>
                             <div class="form-group">
-                                <h2>Current Plan: {{ current_plan.plan }}</h2>
+                                <h2>Current Plan: {{ current_plan }}</h2>
                                 <a href="{% url 'main:change-plan' %}" class="btn btn-primary">Change Plan</a>
+                                <button class="btn btn-danger">Cancel</button>
                                 <hr>
                                 </div>
                             <div class="form-group">
