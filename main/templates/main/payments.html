@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Payment Option - {{ block.super }}
+Payment Options - {{ block.super }}
 {% endblock title %}
 
 {% block content %}
@@ -26,6 +26,11 @@ Payment Option - {{ block.super }}
         <div class="tab-content">
             <div class="tab-pane fade show active" id="nav-tab-mpesa">
                 <!-- <p class="alert alert-success">Some text success or error</p> -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="mpesa">
+                    <button class="btn btn-outline-success">Pay now!</button>
+                </form>
             </div>
 
             <div class="tab-pane fade show" id="nav-tab-card">
