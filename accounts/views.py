@@ -69,7 +69,8 @@ def confirm_registration_view(request, user_id, token):
 
 class UserLoginView(LoginView):
     # todo: get success url
-    # registered user redirected to payment options
+    # registered user (Basic Plan) redirected to dashboard
+    # registered user (Other Plans) redirected to payment options
     # superusers redirected to admin page
 
     pass
