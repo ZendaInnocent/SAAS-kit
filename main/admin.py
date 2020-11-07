@@ -5,7 +5,7 @@ from .models import Plan, Subscription, Transaction
 
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'price', )
 
 
 @admin.register(Subscription)

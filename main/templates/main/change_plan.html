@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block title %}
 Change Plan - {{ block.super }}
@@ -14,7 +15,7 @@ Change Plan - {{ block.super }}
                 <div class="card mb-5 mb-lg-0">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">{{ plan.name }}</h5>
-                        <h6 class="card-price text-center">${{ plan.price }}<span class="period">/month</span></h6>
+                      <h6 class="card-price text-center">{{ plan.price | intcomma }}<span class="period"> Tshs./month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Single User</li>
@@ -48,7 +49,7 @@ Change Plan - {{ block.super }}
                 <div class="card mb-5 mb-lg-0">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">Plus</h5>
-                        <h6 class="card-price text-center">$9<span class="period">/month</span></h6>
+                        <h6 class="card-price text-center">{{ plan.price | intcomma }}<span class="period"> Tshs./month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>5 Users</strong></li>
@@ -79,7 +80,7 @@ Change Plan - {{ block.super }}
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">Pro</h5>
-                        <h6 class="card-price text-center">$49<span class="period">/month</span></h6>
+                        <h6 class="card-price text-center">{{ plan.price | intcomma }}<span class="period"> Tshs./month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Unlimited Users</strong>
