@@ -1,10 +1,15 @@
-from django.contrib.auth import login
+import time
+from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
+from django.conf import settings
+from django.utils import timezone
 
-from .models import Plan
+from .models import Plan, Subscription
+from .forms import TransactionForm
+from portalsdk import APIContext, APIMethodType, APIRequest
 
 
 def index_view(request):
@@ -82,4 +87,8 @@ def thank_you(request):
 
 @login_required
 def payments(request):
-    return render(request, 'main/payments.html')
+    if request.method == 'POST':
+        transaction = TransactionForm(request.POST)
+        transaction.amount = 5000
+        transaction.save()
+    return render(request, 'main/payments.html', {'form': TransactionForm()})

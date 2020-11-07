@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Payment Options - {{ block.super }}
@@ -28,6 +29,7 @@ Payment Options - {{ block.super }}
                 <!-- <p class="alert alert-success">Some text success or error</p> -->
                 <form method="POST">
                     {% csrf_token %}
+                    {{ form | crispy }}
                     <input type="hidden" name="mpesa">
                     <button class="btn btn-outline-success">Pay now!</button>
                 </form>

@@ -28,11 +28,8 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-if not DEBUG:
-    ALLOWED_HOSTS = config('ALLOWED_HOSTS')
-else:
-    ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
+                       s.strip() for s in v.split(',')])
 
 # Application definition
 
@@ -149,3 +146,6 @@ if not DEBUG:
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     EMAIL_FILE_PATH = BASE_DIR / 'sent_mails'
+
+MPESA_PUBLIC_KEY = config('MPESA_PUBLIC_KEY')
+MPESA_API_KEY = config('MPESA_API_KEY')

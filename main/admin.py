@@ -10,7 +10,7 @@ class PlanAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('plan', 'user', 'active', 'canceled', 'expires', )
 
 
 @admin.register(Transaction)
