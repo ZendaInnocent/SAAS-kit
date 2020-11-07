@@ -1,4 +1,4 @@
-# How to contribute to Coding Pride forum
+# How to contribute to Django SAAS-kit
 
 ## Set up working copy of repo in your computer
 
