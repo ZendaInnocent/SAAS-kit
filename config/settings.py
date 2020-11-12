@@ -147,5 +147,15 @@ else:
     EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
     EMAIL_FILE_PATH = BASE_DIR / 'sent_mails'
 
-MPESA_PUBLIC_KEY = config('MPESA_PUBLIC_KEY')
-MPESA_API_KEY = config('MPESA_API_KEY')
+MPESA = {
+    'PUBLIC_KEY': config('MPESA_PUBLIC_KEY'),
+    'API_KEY': config('MPESA_API_KEY'),
+    'BASE_URL': 'openapi.m-pesa.com',
+    'get_session_url': '/sandbox/ipg/v2/vodacomTZN/getSession/',
+    'c2bPayment_url': '/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage/',
+    'reversal_url': '/sandbox/ipg/v2/vodacomTZN/reversal/',
+    'b2cPayment_url': '/sandbox/ipg/v2/vodacomTZN/b2cPayment/',
+    'b2bPayment_url': '/openapi/ipg/v2/vodacomTZN/b2bPayment/',
+    'transaction_status_url':
+        '/openapi/ipg/v2/vodacomTZN/queryTransactionStatus/',
+}

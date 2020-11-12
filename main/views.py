@@ -7,9 +7,13 @@ from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
 
+from main.mpesa import MPESA
+
 from .models import Plan, Subscription
 from .forms import TransactionForm
-from portalsdk import APIContext, APIMethodType, APIRequest
+
+api_key = settings.MPESA['API_KEY']
+public_key = settings.MPESA['PUBLIC_KEY']
 
 
 def index_view(request):
@@ -88,7 +92,49 @@ def thank_you(request):
 @login_required
 def payments(request):
     if request.method == 'POST':
-        transaction = TransactionForm(request.POST)
-        transaction.amount = 5000
-        transaction.save()
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            parameters = {}
+            m_pesa = MPESA(api_key, public_key)
+            results = m_pesa.c2b(parameters)
+
+            if results.body['output_ResponseCode'] == 'INS-0':
+                transaction = form.save(commit=False)
+                transaction.subscrition = request.user.subscription_set.first()
+                transaction.user = request.user
+                transaction.phone = request.POST.get('phone')
+                transaction.amount = request.user.subscription_set.first()\
+                    .plan.price
+                transaction.transactionID = results.body['output_TransactionID']
+                transaction.conversationID = \
+                    results.body['output_ConversationID']
+                transaction.reference_no = reference_no
+                transaction.save()
+
+                return HttpResponse('Your Payment was Successfully sent!')
+
+            elif results.body['output_ResponseCode'] == 'INS-1':
+                messages.add_message(request, messages.ERROR, 'Internal Error')
+
+            elif results.body['output_ResponseCode'] == 'INS-6':
+                messages.add_message(
+                    request, messages.ERROR, 'Transaction Failed')
+
+            elif results.body['output_ResponseCode'] == 'INS-9':
+                messages.add_message(
+                    request, messages.ERROR, 'Request timeout')
+
+            elif results.body['output_ResponseCode'] == 'INS-10':
+                messages.add_message(
+                    request, messages.ERROR, 'Duplicate Transaction')
+
+            elif results.body['output_ResponseCode'] == 'INS-2006':
+                messages.add_message(
+                    request, messages.ERROR, 'Insufficient balance')
+
+            else:
+                messages.add_message(
+                    request, messages.ERROR,
+                    'Configuration Error, contact with support team')
+
     return render(request, 'main/payments.html', {'form': TransactionForm()})
