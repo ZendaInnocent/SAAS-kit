@@ -1,11 +1,9 @@
-import time
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from django.conf import settings
-from django.utils import timezone
 
 from main.mpesa import MPESA
 

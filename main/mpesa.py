@@ -2,14 +2,6 @@ from django.conf import settings
 
 from portalsdk import APIContext, APIMethodType, APIRequest
 
-# BASE_URL = 'openapi.m-pesa.com'
-# get_session_url = '/sandbox/ipg/v2/vodacomTZN/getSession/'
-# c2bPayment_url = '/sandbox/ipg/v2/vodacomTZN/c2bPayment/singleStage/'
-# reversal_url = '/sandbox/ipg/v2/vodacomTZN/reversal/'
-# b2cPayment_url = '/sandbox/ipg/v2/vodacomTZN/b2cPayment/'
-# b2bPayment_url = '/openapi/ipg/v2/vodacomTZN/b2bPayment/'
-# transaction_status_url = '/openapi/ipg/v2/vodacomTZN/queryTransactionStatus/'
-
 BASE_URL = settings.MPESA['BASE_URL']
 get_session_url = settings.MPESA['get_session_url']
 c2bPayment_url = settings.MPESA['c2bPayment_url']

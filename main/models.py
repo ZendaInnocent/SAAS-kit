@@ -19,13 +19,15 @@ class Plan(models.Model):
 
 class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
-    subscription = models.ForeignKey('Subscription', null=True, blank=True,
-                                     editable=False,
-                                     on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, null=True, blank=True, editable=False,
-                             on_delete=models.DO_NOTHING)
-    amount = models.DecimalField(max_digits=64, decimal_places=2,
-                                 null=True, blank=True, editable=False)
+    subscription = models.ForeignKey(
+        'Subscription', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    phone = models.CharField('Enter your M-PESA mobile number',
+                             max_length=10, help_text='Format: 07xxxxxxxx')
+    amount = models.PositiveIntegerField()
+    transactionID = models.CharField(max_length=100)
+    conversationID = models.CharField(max_length=100,)
+    reference_no = models.CharField(max_length=150)
 
     class Meta:
         ordering = ['-timestamp', ]
