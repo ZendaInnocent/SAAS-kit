@@ -17,22 +17,6 @@ class Plan(models.Model):
         return self.name.title()
 
 
-class Transaction(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True, editable=False)
-    subscription = models.ForeignKey(
-        'Subscription', on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    phone = models.CharField('Enter your M-PESA mobile number',
-                             max_length=10, help_text='Format: 07xxxxxxxx')
-    amount = models.PositiveIntegerField()
-    transactionID = models.CharField(max_length=100)
-    conversationID = models.CharField(max_length=100,)
-    reference_no = models.CharField(max_length=150)
-
-    class Meta:
-        ordering = ['-timestamp', ]
-
-
 class Subscription(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     plan = models.ForeignKey(Plan, on_delete=models.DO_NOTHING)
@@ -54,3 +38,17 @@ def __user_get_subscription(user):
 
 
 User.add_to_class('get_subscription', __user_get_subscription)
+
+
+class Payment(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, editable=False)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    phone = models.CharField('M-PESA mobile number',
+                             max_length=12, help_text='Format: 255xxxxxxxxx')
+    amount = models.PositiveIntegerField()
+    transactionID = models.CharField(max_length=100)
+    conversationID = models.CharField(max_length=100,)
+    third_convID = models.CharField('ThirdPartyConversationID', max_length=150)
+
+    class Meta:
+        ordering = ['-timestamp', ]

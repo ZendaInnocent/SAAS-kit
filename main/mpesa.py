@@ -32,35 +32,36 @@ class MPESA:
         Return a valid Session ID needed to transact on M-Pesa using
         OpenAPI.
         """
-        self.context.update({'path': path})
+        self.context.update({'method_type': APIMethodType.GET,
+                             'path': path})
 
-        result = None
+        response = None
 
         try:
-            result = APIRequest(self.context).execute()
+            response = APIRequest(self.context).execute()
         except Exception as e:
             print('Call Failed: ', e)
 
-        if result is None:
+        if response is None:
             raise Exception(
-                'SessionKey call failed to get result. Please check.')
+                'SessionKey call failed to get response. Please check.')
         else:
-            return result.body['output_SessionID']
+            return response.body['output_SessionID']
 
-    def _get_api_results(self, context):
+    def _get_api_response(self, context):
         """
         Return results from API call.
         """
-        results = None
+        response = None
         try:
-            results = APIRequest(context).execute()
+            response = APIRequest(context).execute()
         except Exception as e:
             print('Call Failed: ', e)
 
-        if results is None:
+        if response is None:
             raise Exception('API call failed to get result. Please check.')
         else:
-            return results
+            return response
 
     def c2b(self, parameters: dict, path=c2bPayment_url):
         """
@@ -86,8 +87,8 @@ class MPESA:
             'parameters': {k: v for k, v in parameters.items()}
         })
 
-        results = self._get_api_results(self.context)
-        return results
+        response = self._get_api_response(self.context)
+        return response
 
     def reversal(self, path, reversal_parameters: dict):
         """
@@ -109,8 +110,8 @@ class MPESA:
             'parameters': {k: v for k, v in reversal_parameters.items()}
         })
 
-        results = self._get_api_results(self.context)
-        return results
+        response = self._get_api_response(self.context)
+        return response
 
     def b2c(self, parameters: dict, path=b2cPayment_url):
         """
@@ -135,8 +136,8 @@ class MPESA:
             'parameters': {k: v for k, v in parameters.items()}
         })
 
-        results = self._get_api_results(self.context)
-        return results
+        response = self._get_api_response(self.context)
+        return response
 
     def b2b(self, parameters: dict, path=b2bPayment_url):
         """
@@ -160,16 +161,16 @@ class MPESA:
             'parameters': {k: v for k, v in parameters.items()}
         })
 
-        results = None
+        response = None
         try:
-            results = APIRequest(self.context).execute()
+            response = APIRequest(self.context).execute()
         except Exception as e:
             print('Call Failed: ', e)
 
-        if results is None:
+        if response is None:
             raise Exception('API call failed to get result. Please check.')
         else:
-            return results
+            return response
 
     def query_transaction_status(self, parameters: dict,
                                  path=transaction_status_url):
@@ -190,5 +191,5 @@ class MPESA:
             'parameters': {k: v for k, v in parameters.items()}
         })
 
-        results = self._get_api_results(self.context)
-        return results
+        response = self._get_api_response(self.context)
+        return response

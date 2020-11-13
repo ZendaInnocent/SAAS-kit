@@ -1,11 +1,10 @@
 from django import forms
-from django.forms import fields
 
-from .models import Transaction
+from .models import Payment
 
 
-class TransactionForm(forms.ModelForm):
+class PaymentForm(forms.ModelForm):
 
     class Meta:
-        model = Transaction
+        model = Payment
         fields = ('phone', )

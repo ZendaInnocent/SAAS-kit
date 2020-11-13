@@ -5,10 +5,13 @@ from django.contrib import messages
 from django.urls import reverse
 from django.conf import settings
 
+from portalsdk import APIContext, APIMethodType, APIRequest
+from time import sleep
+
 from main.mpesa import MPESA
 
-from .models import Plan, Subscription
-from .forms import TransactionForm
+from .models import Plan
+from .forms import PaymentForm
 
 api_key = settings.MPESA['API_KEY']
 public_key = settings.MPESA['PUBLIC_KEY']
@@ -90,49 +93,41 @@ def thank_you(request):
 @login_required
 def payments(request):
     if request.method == 'POST':
-        form = TransactionForm(request.POST)
+        form = PaymentForm(request.POST)
         if form.is_valid():
-            parameters = {}
             m_pesa = MPESA(api_key, public_key)
+
+            parameters = {
+                'input_Amount': 10,
+                'input_Country': 'TZN',
+                'input_Currency': 'TZS',
+                # '000000000001',
+                'input_CustomerMSISDN': request.POST.get('phone'),
+                'input_ServiceProviderCode': '000000',
+                'input_ThirdPartyConversationID':
+                'asv02e5958774f7ba228d83d0d689761',
+                'input_TransactionReference': 'T1234C',
+                'input_PurchasedItemsDesc': 'Shoes',
+            }
+
             results = m_pesa.c2b(parameters)
 
             if results.body['output_ResponseCode'] == 'INS-0':
-                transaction = form.save(commit=False)
-                transaction.subscrition = request.user.subscription_set.first()
-                transaction.user = request.user
-                transaction.phone = request.POST.get('phone')
-                transaction.amount = request.user.subscription_set.first()\
-                    .plan.price
-                transaction.transactionID = results.body['output_TransactionID']
-                transaction.conversationID = \
+                payment = form.save(commit=False)
+                payment.user = request.user
+                payment.phone = parameters['input_CustomerMSISDN']
+                payment.amount = parameters['input_Amount']
+                payment.transactionID = results.body['output_TransactionID']
+                payment.conversationID = \
                     results.body['output_ConversationID']
-                transaction.reference_no = reference_no
-                transaction.save()
+                payment.third_convID = \
+                    results.body['output_ThirdPartyConversationID']
+                payment.save()
 
-                return HttpResponse('Your Payment was Successfully sent!')
-
-            elif results.body['output_ResponseCode'] == 'INS-1':
-                messages.add_message(request, messages.ERROR, 'Internal Error')
-
-            elif results.body['output_ResponseCode'] == 'INS-6':
-                messages.add_message(
-                    request, messages.ERROR, 'Transaction Failed')
-
-            elif results.body['output_ResponseCode'] == 'INS-9':
-                messages.add_message(
-                    request, messages.ERROR, 'Request timeout')
-
-            elif results.body['output_ResponseCode'] == 'INS-10':
-                messages.add_message(
-                    request, messages.ERROR, 'Duplicate Transaction')
-
-            elif results.body['output_ResponseCode'] == 'INS-2006':
-                messages.add_message(
-                    request, messages.ERROR, 'Insufficient balance')
+                messages.success(
+                    request, 'Your Payment was Successfully sent!')
 
             else:
-                messages.add_message(
-                    request, messages.ERROR,
-                    'Configuration Error, contact with support team')
+                messages.error(request, results.body['output_ResponseDesc'])
 
-    return render(request, 'main/payments.html', {'form': TransactionForm()})
+    return render(request, 'main/payments.html', {'form': PaymentForm()})

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Plan, Subscription, Transaction
+from .models import Payment, Plan, Subscription
 
 
 @admin.register(Plan)
@@ -13,6 +13,8 @@ class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('plan', 'user', 'active', 'canceled', 'expires', )
 
 
-@admin.register(Transaction)
+@admin.register(Payment)
 class TransactionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('user', 'phone', 'amount', )
+    readonly_fields = ('user',  'phone', 'amount',
+                       'transactionID', 'conversationID', 'third_convID', )
