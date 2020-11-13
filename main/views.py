@@ -1,12 +1,9 @@
-from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from django.conf import settings
-
-from portalsdk import APIContext, APIMethodType, APIRequest
-from time import sleep
+from django.utils.crypto import get_random_string
 
 from main.mpesa import MPESA
 
@@ -104,9 +101,8 @@ def payments(request):
                 # '000000000001',
                 'input_CustomerMSISDN': request.POST.get('phone'),
                 'input_ServiceProviderCode': '000000',
-                'input_ThirdPartyConversationID':
-                'asv02e5958774f7ba228d83d0d689761',
-                'input_TransactionReference': 'T1234C',
+                'input_ThirdPartyConversationID': get_random_string(18),
+                'input_TransactionReference': get_random_string(18),
                 'input_PurchasedItemsDesc': 'Shoes',
             }
 
